@@ -10,4 +10,4 @@ To run:
     $ ./script/sh
     ```
 ### Caveat
-This script works as if it's running the entire setup for the first time. If this doesn't work, please uncomment `line 7` in script.sh
+This script works as if it's running the entire setup for the first time. If docker-compose fails to create the containers, please uncomment `line 7` in script.sh
