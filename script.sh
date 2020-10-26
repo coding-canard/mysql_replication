@@ -4,7 +4,7 @@ PRIMARY_HOST=''
 LOG_FILE=''
 LOG_POS=''
 
-docker-compose down
+# docker-compose down
 docker-compose up -d
 
 containers=(primary secondary)

@@ -9,3 +9,5 @@ To run:
     $ chmod 777 script.sh
     $ ./script/sh
     ```
+### Caveat
+This script works as if it's running the entire setup for the first time. If this doesn't work, please uncomment `line 7` in script.sh
