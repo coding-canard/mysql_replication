@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+    primary:
+        image: mysql/mysql-server:8.0
+        container_name: primary
+        hostname: primary
+        ports:
+            - '10010:3306'
+        environment:
+            MYSQL_ROOT_USER: 'root'
+            MYSQL_ROOT_PASSWORD: 'password'
+        networks:
+            network:
+                ipv4_address: 172.20.0.2
+        # restart: unless-stopped
+        healthcheck:
+            test: "mysqladmin ping -h 127.0.0.1 -P 10001 -u root --password=password"
+            interval: 2s
+            retries: 20
+    secondary:
+        image: mysql/mysql-server:8.0
+        container_name: secondary
+        hostname: secondary
+        ports:
+            - '10011:3306'
+        environment:
+            MYSQL_USER: 'root'
+            MYSQL_ROOT_PASSWORD: 'password'
+        networks:
+            network:
+                ipv4_address: 172.20.0.3
+        # restart: unless-stopped
+        healthcheck:
+            test: "mysqladmin ping -h 127.0.0.1 -P 10002 -u root --password=password"
+            interval: 2s
+            retries: 20
+networks:
+    network:
+        ipam:
+            config:
+                - subnet: 172.20.0.0/16
