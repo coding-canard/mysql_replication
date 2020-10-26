@@ -4,7 +4,7 @@ PRIMARY_HOST=''
 LOG_FILE=''
 LOG_POS=''
 
-# docker-compose down
+docker-compose down
 docker-compose up -d
 
 containers=(primary secondary)
@@ -56,11 +56,11 @@ docker-compose restart secondary
 until docker exec -it secondary bash -c "mysql -uroot --password=password -e 'SHOW SlAVE STATUS \G;' &> /dev/null"; do
     sleep 1
 done
-STATUS=$(docker exec -it secondary bash -c "mysql -uroot --password=password -e 'SHOW SlAVE STATUS \G;' 2>/dev/null")
-SIOR=$(echo $STATUS | grep Slave_IO_Running: | awk '{print $2;}')
-SSQLR=$(echo $STATUS | grep Slave_SQL_Running:  | awk '{print $2;}')
-if [ ! $SIOR -o ! $SSQLR  ]; then
-    echo "Some thing went wrong during the setup"
+SIOR=$(docker exec -it secondary bash -c "mysql -uroot --password=password -e 'SHOW SlAVE STATUS \G;' 2>/dev/null" | grep Slave_IO_Running: | awk '{print $2;}' | awk '{$1=$1;print}' )
+SSQLR=$(docker exec -it secondary bash -c "mysql -uroot --password=password -e 'SHOW SlAVE STATUS \G;' 2>/dev/null" | grep Slave_SQL_Running: | awk '{print $2;}' | awk '{$1=$1;print}')
+
+if [[ $SIOR != *"Yes"* ]] || [[ $SSQLR != *"Yes"* ]]; then
+    echo -ne "\033[0;31mSome thing went wrong during the setup\033[0;39m"
     exit 1
 else
     echo -ne "\033[0;36mContainers setup complete \033[0;39m"
