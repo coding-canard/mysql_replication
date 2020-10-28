@@ -7,7 +7,7 @@ To run:
     ```sh
     $ cd mysql_replication
     $ chmod 777 script.sh
-    $ ./script/sh
+    $ ./script.sh
     ```
 ### Caveat
 This script works as if it's running the entire setup for the first time. If docker-compose fails to create the containers, please uncomment `line 7` in script.sh
